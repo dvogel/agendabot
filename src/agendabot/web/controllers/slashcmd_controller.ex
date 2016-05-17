@@ -1,6 +1,9 @@
 defmodule Agendabot.SlashcmdController do
   use Agendabot.Web, :controller
 
+  alias Agendabot.Command
+  alias Agendabot.CommandParser
+
   def slashcmd(conn, params) do
     # Slack sends these params:
     # token=gIkuvaNzQIHg97ATvDxqgjtO
@@ -23,20 +26,11 @@ defmodule Agendabot.SlashcmdController do
 
   def handle_agenda_cmd(conn, params) do
     %{ "text" => text } = params
-    tokens = Regex.split(~r/\s+/, text, trim: true)
+    cmd = CommandParser.parse(text)
 
     %{ "channel_id" => channel_id } = params
-    if length(tokens) == 0 do
-      respond_with_current_agenda_or_help(conn, channel_id)
-    else
-      [ subcmd | tokens ] = tokens
-      case subcmd do
-        'add' -> nil
-        'new' -> nil
-        'announce' -> nil
-        'help' -> respond_with_help(conn, channel_id)
-      end
-    end
+    response = Command.apply(cmd, channel_id)
+    json(conn, response)
   end
 
   def error_response(msg) do
