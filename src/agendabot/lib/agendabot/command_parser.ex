@@ -17,17 +17,18 @@ defmodule Agendabot.CommandParser do
     else
       [ subcmd | tokens ] = tokens
       case subcmd do
-        'add' -> parse_add_arguments(tokens)
-        'new' -> %NewAgendaCommand{}
-        'announce' -> %AnnounceAgendaCommand{}
-        'help' -> %HelpCommand{}
+        "add" -> parse_add_arguments(tokens)
+        "new" -> %NewAgendaCommand{}
+        "announce" -> %AnnounceAgendaCommand{}
+        "help" -> %HelpCommand{}
       end
     end
   end
 
 
   def parse_add_arguments (tokens) do
-    # TODO: Parse the tokens
-    %AddAgendaItemCommand{text: 'TODO'}
+    tokens = drop_whitespace(tokens)
+    item_text = Enum.join(tokens, "")
+    %AddAgendaItemCommand{text: item_text}
   end
 end
