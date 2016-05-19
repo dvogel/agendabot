@@ -1,5 +1,6 @@
 defmodule Agendabot.Agenda do
   use Agendabot.Web, :model
+  import Ecto.Query
 
   schema "agendas" do
     field :channel_id, :string
@@ -23,4 +24,5 @@ defmodule Agendabot.Agenda do
     model
     |> cast(params, @required_fields, @optional_fields)
   end
+
 end
