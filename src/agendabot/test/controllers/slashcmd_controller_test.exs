@@ -44,7 +44,7 @@ defmodule Agendabot.SlashcmdControllerTest do
       :channel_id => Map.get(@dummy_params, :channel_id),
       :post_id => "F123456",
       :creator_id => Map.get(@dummy_params, :user_id),
-      :meeting_at => Ecto.DateTime.utc(),
+      :meeting_at => Timex.DateTime.now,
     })
     params = @dummy_params
               |> Map.put(:command, "/agenda")

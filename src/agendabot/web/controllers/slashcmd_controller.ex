@@ -4,6 +4,8 @@ defmodule Agendabot.SlashcmdController do
   alias Agendabot.Command
   alias Agendabot.CommandParser
 
+  import ExConstructor, only: [populate_struct: 2]
+
   def slashcmd(conn, params) do
     # Slack sends these params:
     # token=gIkuvaNzQIHg97ATvDxqgjtO
@@ -26,9 +28,9 @@ defmodule Agendabot.SlashcmdController do
 
   def handle_agenda_cmd(conn, params) do
     %{ "text" => text } = params
-    %{ "channel_id" => channel_id } = params
+    cmd_params = populate_struct(%Slack.SlashcmdParams{}, params)
     response = CommandParser.parse(text)
-                |> Command.apply(channel_id)
+                |> Command.apply(cmd_params)
     json(conn, response)
   end
 

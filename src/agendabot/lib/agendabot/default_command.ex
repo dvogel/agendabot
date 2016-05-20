@@ -2,8 +2,8 @@ defmodule Agendabot.DefaultCommand do
   defstruct([])
 
   defimpl Agendabot.Command, for: Agendabot.DefaultCommand do
-    def apply(cmd, channel_id) do
-      %{ "text" => "No agenda exists for #{channel_id}",
+    def apply(cmd, ctx) do
+      %{ "text" => "No agenda exists for #{ctx.channel_id}",
          "attachments" => [
            %{ "text" => "Perhaps you meant /agenda help" }
          ]

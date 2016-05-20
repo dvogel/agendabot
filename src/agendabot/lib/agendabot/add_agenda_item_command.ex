@@ -2,7 +2,7 @@ defmodule Agendabot.AddAgendaItemCommand do
   defstruct text: nil
 
   defimpl Agendabot.Command, for: Agendabot.AddAgendaItemCommand do
-    def apply(cmd, channel_id) do
+    def apply(cmd, ctx) do
       nil
     end
 

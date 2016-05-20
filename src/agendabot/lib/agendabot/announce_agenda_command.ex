@@ -5,20 +5,20 @@ defmodule Agendabot.AnnounceAgendaCommand do
   import Ecto.Query
 
   defimpl Agendabot.Command, for: Agendabot.AnnounceAgendaCommand do
-    def apply(cmd, channel_id) do
+    def apply(cmd, ctx) do
       qry = from a in Agendabot.Agenda,
-            where: a.channel_id == ^channel_id,
+            where: a.channel_id == ^ctx.channel_id,
             order_by: [desc: a.meeting_at]
       agenda = Agendabot.Repo.one(qry)
 
       if is_nil(agenda) do
         ephemeral_response
-          |> with_text("Sorry, I don't know of an agenda for #{channel_id}")
+          |> with_text("Sorry, I don't know of an agenda for #{ctx.channel_id}")
       else
         in_channel_response
-          |> with_text("The agenda for #{channel_id}")
+          |> with_text("The agenda for #{ctx.channel_id}")
           |> with_attachment(%{
-              "title" => "Agenda for ##{channel_id}",
+              "title" => "Agenda for ##{ctx.channel_id}",
               "title_link" => agenda.post_id
             })
       end
